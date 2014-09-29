@@ -34,7 +34,7 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
-					<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fui-user"></i> {{Auth::user()->username}} <span class="caret"></span></a>
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fui-user"></i> {{Auth::user()->username}}<span class="caret"></span></a>
 					<ul role="menu" class="dropdown-menu">
 						<li><a href="{{ URL::route('logout') }}"><i class="fui-power"></i> Logout</a></li>
 					</ul>
@@ -50,7 +50,7 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
-					<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fui-user"></i> {{Auth::user()->username}} <span class="caret"></span></a>
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fui-user"></i> {{Auth::user()->username}}<span class="caret"></span></a>
 					<ul role="menu" class="dropdown-menu">
 						<li><a href="#"><i class="fui-gear"></i> Manage Profile</a></li>
 						<li class="divider"></li>
