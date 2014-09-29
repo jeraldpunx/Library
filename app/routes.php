@@ -7,7 +7,7 @@ Route::get('/', ['as'=>'home', function(){
 		else
 			return View::make('users.search');
 	} else {
-		return View::make('home');
+		return View::make('users.search');
 	}
 	
 	// Book::create([

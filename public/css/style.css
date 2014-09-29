@@ -14,6 +14,13 @@ body {
   line-height: 1.231;
   padding-top: 70px;
 }
+
+.login-form:before {
+  content:none;
+}
+.login-screen {
+  padding: 123px 199px 33px;
+}
 /*SEARCH FORM*/
 .search {
   position: relative;
