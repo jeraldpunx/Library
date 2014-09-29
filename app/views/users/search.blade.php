@@ -65,11 +65,12 @@
 
                 $.post('result-search-data', {search_field: search_field, search_concept: search_concept}, function(data)
                 {
+                    console.log(data);
                     result_search.append('<hgroup class="mb20"><h1>Search Results</h1><h2 class="lead"><strong class="text-danger">'+data['book_count']+'</strong> results were found for the search for <strong class="text-danger">'+search_field+'</strong></h2></hgroup>');
 
                     $.each(data, function(bb) {
                         $.each(this, function(cc) {
-                            result_search.append('<article class="search-result row"><div class="col-xs-12 col-sm-12 col-md-3"><a href="#" title="'+data[bb][cc]['title']+'" class="thumbnail"><img src="http://lorempixel.com/250/140/people" alt="Lorem ipsum" /></a></div><div class="col-xs-12 col-sm-12 col-md-2"><ul class="meta-search"><li><i class="fa fa-book"></i><span>'+data[bb][cc]['author']+'</span></li><li><i class="fa fa-calendar"></i><span>'+data[bb][cc]['created_at']+'</span></li><li><i class="fa fa-tags"></i><span>'+data[bb][cc]['category']+'</span></li></ul></div><div class="col-xs-12 col-sm-12 col-md-7 excerpet"><h3><a href="#" title="">'+data[bb][cc]['title']+'</a></h3><p>'+data[bb][cc]['description']+'</p><span class="plus"><a href="#"><i class="fa fa-plus"></i></a></span></div><span class="clearfix borda"></span></article>' );
+                            result_search.append('<article class="search-result row"><div class="col-xs-12 col-sm-12 col-md-3"><a href="#" title="'+data[bb][cc]['title']+'" class="thumbnail"><img src="{{URL::to('/img/upload')}}/'+data[bb][cc]['image']+'" alt="Lorem ipsum" /></a></div><div class="col-xs-12 col-sm-12 col-md-2"><ul class="meta-search"><li><i class="fa fa-book"></i><span>'+data[bb][cc]['ISBN']+'</span></li><li><i class="fa fa-user"></i><span>'+data[bb][cc]['author']+'</span></li><li><i class="fa fa-calendar"></i><span>'+data[bb][cc]['created_at']+'</span></li><li><i class="fa fa-tags"></i><span>'+data[bb][cc]['category']+'</span></li></ul></div><div class="col-xs-12 col-sm-12 col-md-7 excerpet"><h3><a href="#" title="">'+data[bb][cc]['title']+'</a></h3><p>'+data[bb][cc]['description']+'</p><span class="plus"><a href="#"><i class="fa fa-plus"></i> Request</a></span></div><span class="clearfix borda"></span></article>' );
                             
                         });
                     });

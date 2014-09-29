@@ -131,8 +131,15 @@ class UsersController extends \BaseController {
 	                    ->Where('category', 'LIKE','%'.$search.'%')
 	                    ->count();
 	        }
-	        
-	        //return $book_result;
+	        $count=0;
+	        foreach ($book_result as $key => $value) {
+	        	$description = $book_result[$count]->description;
+	        	if(strlen($description) > 200) {
+	        		$descriptionCut = substr($description, 0, 200);
+	        		$book_result[$count]->description = substr($descriptionCut, 0, strrpos($descriptionCut, ' ')).'... <a href="/this/story">Read More</a>';
+	        	}
+	        	$count++;
+	        }
 			return Response::json(['book_result'=>$book_result, 'book_count'=>$book_count]);
 		}
 	}

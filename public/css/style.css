@@ -49,8 +49,8 @@ body {
 #result-search .search-result .col-md-7 { position: relative; }
 #result-search .search-result h3 { margin-top: 0 !important; margin-bottom: 10px !important; }
 #result-search .search-result h3 > a, .search-result i { color: #16a085 !important; }
-#result-search .search-result span.plus { position: absolute; right: 0; top: 126px; }
-#result-search .search-result span.plus a { background-color: #16a085; padding: 5px 5px 3px 5px; }
+#result-search .search-result span.plus { position: absolute; right: 0; top: 140px; }
+#result-search .search-result span.plus a { color: #fff; background-color: #16a085; padding: 10px; }
 #result-search .search-result span.plus a:hover { background-color: #1abc9c; }
 #result-search .search-result span.plus a i { color: #fff !important; }
 #result-search .search-result span.border { display: block; width: 97%; margin: 0 15px; border-bottom: 1px dotted #ccc; }
