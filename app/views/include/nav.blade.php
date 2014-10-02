@@ -55,7 +55,5 @@
 			</ul>
 		</div><!--/.nav-collapse -->
 @endif
-
-
 	</div>
 </div>
