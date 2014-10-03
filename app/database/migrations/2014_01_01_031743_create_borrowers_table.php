@@ -18,13 +18,8 @@ class CreateBorrowersTable extends Migration {
 			$table->string('borrower_code');
 			$table->string('first_name');
 			$table->string('last_name');
-			$table->unsignedInteger('user_id')->nullable();
+			$table->Integer('penalty')->nullable();
 			$table->timestamps();
-		});
-
-		Schema::table('borrowers', function(Blueprint $table)
-		{
-		    $table->foreign('user_id')->references('id')->on('users');
 		});
 	}
 

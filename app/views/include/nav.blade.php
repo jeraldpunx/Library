@@ -27,14 +27,23 @@
 	@elseif(Auth::user()->previlage == 1)
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="{{ URL::route('home') }}">Search</a></li>
-				<li><a href="#about">Transaction</a></li>
+				<li><a href="{{ URL::route('home') }}"><i class="fa fa-search"></i> Search</a></li>
+				<li class="dropdown">
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-info-circle"></i> Transaction <b class="caret"></b></a>
+					<span class="dropdown-arrow"></span>
+					<ul class="dropdown-menu">
+						<li><a href="{{ URL::route('userHistory') }}"><i class="fa fa-history"></i> My History</a></li>
+						<li><a href="{{ URL::route('userRequest') }}"><i class="fa fa-bookmark"></i> My Request</a></li>
+						<li><a href="{{ URL::route('userUnreturn') }}"><i class="fa fa-book"></i> My Unreturned Books</a></li>
+					</ul>
+				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#" style="color: #c0392b;">Penalty: $50</a></li>
 				<li class="dropdown">
 					<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fui-user"></i> {{Auth::user()->username}}<span class="caret"></span></a>
 					<ul role="menu" class="dropdown-menu">
-						<li><a href="#"><i class="fui-gear"></i> Manage Profile</a></li>
+						<li><a href="{{ URL::route('manageProfile') }}"><i class="fui-gear"></i> Manage Profile</a></li>
 						<li class="divider"></li>
 						<li><a href="{{ URL::route('logout') }}"><i class="fui-power"></i> Logout</a></li>
 					</ul>
@@ -45,13 +54,11 @@
 @else
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="{{ URL::route('home') }}">Home</a></li>
-				<li><a href="#about">Search</a></li>
-				<li><a href="#contact">Contact</a></li>
+				<li><a href="{{ URL::route('home') }}"><i class="fa fa-search"></i> Search</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{ URL::route('register') }}">Register</a></li>
-				<li><a href="{{ URL::route('login') }}">Login</a></li>
+				<li><a href="{{ URL::route('register') }}"><i class="fa fa-angle-double-right"></i> Register</a></li>
+				<li><a href="{{ URL::route('login') }}"><i class="fa fa-sign-in"></i> Login</a></li>
 			</ul>
 		</div><!--/.nav-collapse -->
 @endif

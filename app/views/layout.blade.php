@@ -12,6 +12,7 @@
         {{ HTML::style('css/animations.css') }}
         {{ HTML::style('css/notifIt.css') }}
         {{ HTML::style('css/font-awesome.css') }}
+        {{ HTML::style('css/jquery.dataTables.css') }}
         {{ HTML::style('css/style.css') }}
     </head>
 
@@ -28,6 +29,7 @@
         <script src="{{ URL::asset('js/page-transitions.js') }}"></script>
         <script src="{{ URL::asset('js/startup-kit.js') }}"></script>
         <script src="{{ URL::asset('js/notifIt.js') }}"></script>
+        <script src="{{ URL::asset('js/jquery.dataTables.min.js') }}"></script>
         @yield('script')  
     </body>
 </html>

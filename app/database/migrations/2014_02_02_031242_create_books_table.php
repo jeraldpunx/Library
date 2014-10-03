@@ -19,6 +19,7 @@ class CreateBooksTable extends Migration {
 			$table->string('title');
 			$table->string('author');
 			$table->string('description')->nullable();
+			$table->string('image')->nullable();
 			$table->string('category');
 			$table->string('quantity');
 			$table->timestamps();

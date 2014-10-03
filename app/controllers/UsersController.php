@@ -29,8 +29,8 @@ class UsersController extends \BaseController {
 		return Redirect::route('home');
 	}
 
-	public function profile(){
-		return View::make('users.profile');
+	public function manageProfile(){
+		return View::make('users.manage');
 	}
 
 	public function create()
@@ -58,22 +58,22 @@ class UsersController extends \BaseController {
 	    $validation = Validator::make($input, $rules, $custom_error);
 
 	    if($validation->passes()) {
+	    	$borrower = new Borrower;
+			$borrower->borrower_code = Input::get('borrower_code');
+			$borrower->first_name = Input::get('first_name');
+			$borrower->last_name = Input::get('last_name');
+			$borrower->penalty = 0;
+			$borrower->save();
+
 	    	$user = new User;
 			$user->username = Input::get('username');
 			$user->password = Hash::make(Input::get('password'));
 			$user->previlage = 1;
+			$user->borrower_id = $borrower->id;
 			$user->save();
 
-			$borrower = new Borrower;
-			$borrower->borrower_code = Input::get('borrower_code');
-			$borrower->first_name = Input::get('first_name');
-			$borrower->last_name = Input::get('last_name');
-			$borrower->user_id = $user->id;
-
-			$borrower->save();
-
 			return Redirect::route('login')
-						->with('flash_error', 'You are successfully registered.');
+						->with('flash_error', 'You have been successfully registered.');
 	    } else {
 	    	return Redirect::back()->withInput()->withErrors($validation)->with('flash_error', 'Validation Errors!');
 	    }
@@ -142,5 +142,82 @@ class UsersController extends \BaseController {
 	        }
 			return Response::json(['book_result'=>$book_result, 'book_count'=>$book_count]);
 		}
+	}
+
+	public function requestBookData() {
+		if(Request::ajax()) {
+			$borrowerId = Input::get('borrowerId');
+			$bookId = Input::get('bookId');
+
+			$checkTransaction = DB::table('transactions')
+						->Where('borrower_id', '=', $borrowerId)
+						->Where('book_id', '=', $bookId)
+						->where(function($query)
+						{
+							$query->where(function($query1) {
+								$query1->whereNotNull('reservedDate')
+									   ->whereNull('borrowedDate');
+
+							})
+							->orWhere(function($query2) {
+								$query2->whereNotNull('borrowedDate')
+									   ->whereNull('returnedDate');
+							});
+						})->count();
+			if($checkTransaction > 0) {
+				return 0;
+			} else {
+				$transaction = new Transaction;
+				$transaction->borrower_id = $borrowerId;
+				$transaction->book_id = $bookId;
+				$transaction->reservedDate = date("Y-m-d H:i:s", time());
+				$transaction->save();
+				return 1;
+			}
+		}
+	}
+
+	public function userHistory() {
+		$histories = DB::table('transactions')
+	        				->leftJoin('books', 'transactions.book_id', '=', 'books.id')
+	        				->Where('borrower_id', '=', Auth::user()->borrower_id)
+	        				->whereNotNull('borrowedDate')
+	        				->whereNotNull('returnedDate')
+				            ->get();
+
+		return View::make('users.history')->with('histories', $histories);
+	}
+
+	public function userRequest() {
+		$requests = DB::table('transactions')
+						->join('books', 'transactions.book_id', '=', 'books.id')
+	        			->select('transactions.id as transaction_id', 
+	        					'books.ISBN', 
+	        					'books.title',
+	        					'books.author',
+	        					'transactions.reservedDate')
+	        			->Where('borrower_id', '=', Auth::user()->borrower_id)
+						->whereNotNull('reservedDate')
+						->whereNull('borrowedDate')
+	        			->whereNull('returnedDate')
+	        			->orderBy('reservedDate', 'desc')
+						->get();
+		return View::make('users.request')->with('requests', $requests);
+	}
+
+	public function deleteRequest() {
+		if (Request::ajax()) {
+			Transaction::find(Input::get('transaction_id'))->delete();
+		}
+	}
+
+	public function userUnreturn() {
+		$unreturns = DB::table('transactions')
+	        				->leftJoin('books', 'transactions.book_id', '=', 'books.id')
+	        				->Where('borrower_id', '=', Auth::user()->borrower_id)
+	        				->whereNotNull('borrowedDate')
+	        				->whereNull('returnedDate')
+				            ->get();
+		return View::make('users.unreturn')->with('unreturns', $unreturns);
 	}
 }

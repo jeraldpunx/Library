@@ -12,7 +12,11 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.231;
-  padding-top: 70px;
+  padding-top: 80px;
+}
+
+.page-wrapper {
+  margin-bottom: 80px;
 }
 
 .navbar {
@@ -23,12 +27,7 @@ body {
   box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.25);
 }
 
-.login-form:before {
-  content:none;
-}
-.login-screen {
-  padding: 123px 199px 33px;
-}
+
 /*SEARCH FORM*/
 .search {
   position: relative;
@@ -71,21 +70,22 @@ body {
 #result-search .search-result span.border { display: block; width: 97%; margin: 0 15px; border-bottom: 1px dotted #ccc; }
 #result-search { padding-top: 20px; }
 /*LOGIN AREA*/
+
+.login-form:before {
+  content:none;
+}
+.login-screen {
+  padding: 80px 199px 70px;
+}
 .login-screen {
   position: absolute;
-  margin-top: -70px;
+  margin-top: -80px;
   width:100%;
   height: 100%;
   background-color: #1abc9c;
 }
 .login-form {
     margin: 0 100px;
-}
-.login-icon {
-  left: 265px;
-  position: absolute;
-  top: 100px;
-  color: #fff !important;
 }
 .login-form .login-field-icon {
   font-size: 18px;
@@ -103,4 +103,12 @@ body {
 }
 .login-screen label {
   line-height: 20px;
+}
+
+.badge {
+  background-color: #c0392b;
+}
+
+.badge:hover {
+  background-color: #e84737;
 }

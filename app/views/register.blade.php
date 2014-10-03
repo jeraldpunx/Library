@@ -2,12 +2,6 @@
 
 @section('content')
 	<div class="login-screen">
-		<div class="login-icon">
-			<h4>Welcome to</h4>
-			{{ HTML::image('img/Book@2x.png') }}
-			<h3>{{ $companyName }}</h3>
-		</div>
-
 		{{ Form::open((['action'=>'register', 'method'=>'POST', 'class'=>'login-form'])) }}
 			<div class="form-group">
 				{{ Form::text('username', '', ['class'=>'form-control login-field', 'placeholder'=>'Enter your username', 'required'=>'', 'autofocus'=>'']) }}

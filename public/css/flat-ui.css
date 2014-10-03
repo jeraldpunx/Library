@@ -4493,3 +4493,13 @@ footer p {
 .mal {
   margin-left: 20px;
 }
+
+.panel-primary {
+  border-color: #1abc9c;
+}
+
+.panel-primary > .panel-heading {
+  background-color: #1abc9c;
+  border-color: #1abc9c;
+  color: #ffffff;
+}

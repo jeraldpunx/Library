@@ -74,7 +74,7 @@
 
                     $.each(data, function(bb) {
                         $.each(this, function(cc) {
-                            result_search.append('<article class="search-result row"><div class="col-xs-12 col-sm-12 col-md-3"><a href="#" title="'+data[bb][cc]['title']+'" class="thumbnail"><img src="{{URL::to('/img/upload')}}/'+data[bb][cc]['image']+'" alt="Lorem ipsum" /></a></div><div class="col-xs-12 col-sm-12 col-md-2"><ul class="meta-search"><li><i class="fa fa-book"></i><span>'+data[bb][cc]['ISBN']+'</span></li><li><i class="fa fa-user"></i><span>'+data[bb][cc]['author']+'</span></li><li><i class="fa fa-calendar"></i><span>'+data[bb][cc]['created_at']+'</span></li><li><i class="fa fa-tags"></i><span>'+data[bb][cc]['category']+'</span></li></ul></div><div class="col-xs-12 col-sm-12 col-md-7 excerpet"><h3><a href="#" title="">'+data[bb][cc]['title']+'</a></h3><p>'+data[bb][cc]['description']+'</p><span class="plus"><button data-id="'+data[bb][cc]['id']+'" class="btn btn-success requestBook"><i class="fa fa-plus"></i> Request</button></span></div><span class="clearfix borda"></span></article>' );
+                            result_search.append('<article class="search-result row"><div class="col-xs-12 col-sm-12 col-md-3"><a href="#" title="'+data[bb][cc]['title']+'" class="thumbnail"><img src="{{URL::to('/img/upload')}}/'+data[bb][cc]['image']+'" /></a></div><div class="col-xs-12 col-sm-12 col-md-2"><ul class="meta-search"><li><i class="fa fa-book"></i><span>'+data[bb][cc]['ISBN']+'</span></li><li><i class="fa fa-user"></i><span>'+data[bb][cc]['author']+'</span></li><li><i class="fa fa-calendar"></i><span>'+data[bb][cc]['created_at']+'</span></li><li><i class="fa fa-tags"></i><span>'+data[bb][cc]['category']+'</span></li></ul></div><div class="col-xs-12 col-sm-12 col-md-7 excerpet"><h3><a href="#" title="">'+data[bb][cc]['title']+'</a></h3><p>'+data[bb][cc]['description']+'</p><span class="plus"><button data-id="'+data[bb][cc]['id']+'" class="btn btn-success requestBook"><i class="fa fa-plus"></i> Request</button></span></div><span class="clearfix borda"></span></article>' );
                             
                         });
                     });
@@ -89,25 +89,25 @@
             window.location = "{{ URL::route('login') }}";
             return false;
         @else
-            var userId = {{ Auth::user()->id }};
-        @endif
-        var bookId = $(this).data("id");
+            var borrowerId = {{ Auth::user()->borrower_id }};
+            var bookId = $(this).data("id");
 
-        var msg = "";
-        var bgcolor = "";
-        $.post('request-book-data', {userId: userId, bookId: bookId}).done( function(data) {
-            if(data == 1) {
-                msg = "Successful! You have made a request.";
-                bgcolor = "#27ae60";
-            } else {
-                msg = "Failed! You already requested this book.";
-                bgcolor = "#c0392b";
-            }
-            notif({
-                msg: msg,
-                bgcolor: bgcolor
+            var msg = "";
+            var bgcolor = "";
+            $.post('request-book-data', {borrowerId: borrowerId, bookId: bookId}).done( function(data) {
+                if(data == 1) {
+                    msg = "Successful! You have made a request.";
+                    bgcolor = "#27ae60";
+                } else {
+                    msg = "Failed! You already requested this book.";
+                    bgcolor = "#c0392b";
+                }
+                notif({
+                    msg: msg,
+                    bgcolor: bgcolor
+                });
             });
-        });
+        @endif
     });
 </script>
 @endsection
