@@ -30,7 +30,7 @@
 			notif({
 			  msg: "{{Session::get('flash_error')}}",
 			  type: "success",
-			  bgcolor: "#c0392b"
+			  bgcolor: "{{ Session::get('flash_color') }}"
 			});
 		@endif
 	});

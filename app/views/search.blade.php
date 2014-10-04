@@ -99,12 +99,13 @@
                     msg = "Successful! You have made a request.";
                     bgcolor = "#27ae60";
                 } else {
-                    msg = "Failed! You already requested this book.";
+                    msg = "Failed to request this book! One of reasons.<ul><li>You already requested this book</li><li>You still have pending payment.</li><li>You are still borrowing this Book.</li></ul>";
                     bgcolor = "#c0392b";
                 }
                 notif({
                     msg: msg,
-                    bgcolor: bgcolor
+                    bgcolor: bgcolor,
+                    multiline: true
                 });
             });
         @endif

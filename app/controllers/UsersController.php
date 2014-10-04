@@ -21,16 +21,82 @@ class UsersController extends \BaseController {
         // authentication failure! lets go back to the login page
         return Redirect::route('login')
         	->with('flash_error', 'Your username/password combination was incorrect.')
+        	->with('flash_color', '#c0392b')
         	->withInput();
 	}
 
-	public function logout(){
+	public function logout()
+	{
 		Auth::logout();
 		return Redirect::route('home');
 	}
 
-	public function manageProfile(){
-		return View::make('users.manage');
+	public function manageProfile()
+	{
+		$borrower = DB::table('borrowers')
+					->leftJoin('users', 'users.borrower_id', '=', 'borrowers.id')
+					->where('borrower_id', '=', Auth::user()->borrower_id)
+					->get();
+		return View::make('users.manage')->with('borrower', $borrower);
+	}
+
+	public function changeProfile()
+	{
+		$user = Auth::user();
+		$borrower = Borrower::find($user->borrower_id);
+        $rules = array(
+		    'username' => 'min:5|unique:users,username,'.$user->id,
+		    'borrower_code' => 'unique:borrowers,borrower_code,'.$borrower->id
+		);
+
+		$validation = Validator::make(Input::all(), $rules);
+
+		if($validation->passes()) {
+			$user->username = Input::get('username');
+			$user->save();
+
+			$borrower->borrower_code = Input::get('borrower_code');
+			$borrower->first_name = Input::get('first_name');
+			$borrower->last_name = Input::get('last_name');
+			$borrower->save();
+		   	return Redirect::route('manageProfile')
+        		->with('flash_error', 'Successfully changed.')
+        		->with('flash_color', '#27ae60');
+		} else {
+		  	return Redirect::route('manageProfile')
+        		->with('flash_error', 'Failed to change Profile Information.')
+        		->with('flash_color', '#c0392b');
+	    }
+	}
+
+	public function changePassword()
+	{
+		
+        $user = Auth::user();
+		if (!Hash::check(Input::get('oldPassword'), $user->password)) {
+	        return Redirect::route('manageProfile')
+        	->with('flash_error', 'Please specify the good current password.')
+        	->with('flash_color', '#c0392b');
+	    } else {
+	    	$rules = array(
+		        'password' => 'required|confirmed',
+				'password_confirmation' => 'same:password',
+		    );
+
+		    $validation = Validator::make(Input::all(), $rules);
+
+		    if($validation->passes()) {
+		    	$user->password = Hash::make(Input::get('password'));
+				$user->save();
+		    	return Redirect::route('manageProfile')
+        			->with('flash_error', 'Successfully changed password.')
+        			->with('flash_color', '#27ae60');
+		    } else {
+		    	return Redirect::route('manageProfile')
+        			->with('flash_error', 'Failed to change password.')
+        			->with('flash_color', '#c0392b');
+		    }
+	    }
 	}
 
 	public function create()
@@ -73,13 +139,18 @@ class UsersController extends \BaseController {
 			$user->save();
 
 			return Redirect::route('login')
-						->with('flash_error', 'You have been successfully registered.');
+						->with('flash_error', 'You have been successfully registered. Please sign-in to continue.')
+						->with('flash_color', '#27ae60');
 	    } else {
-	    	return Redirect::back()->withInput()->withErrors($validation)->with('flash_error', 'Validation Errors!');
+	    	return Redirect::back()
+	    	->withInput()
+	    	->withErrors($validation)
+	    	->with('flash_error', 'Validation Errors!');
 	    }
 	}
 
-	public function resultSearchData(){
+	public function resultSearchData()
+	{
 		if(Request::ajax()) {
 			$search = Input::get('search_field');
 			$search_concept = Input::get('search_concept');
@@ -144,7 +215,8 @@ class UsersController extends \BaseController {
 		}
 	}
 
-	public function requestBookData() {
+	public function requestBookData() 
+	{
 		if(Request::ajax()) {
 			$borrowerId = Input::get('borrowerId');
 			$bookId = Input::get('bookId');
@@ -164,7 +236,11 @@ class UsersController extends \BaseController {
 									   ->whereNull('returnedDate');
 							});
 						})->count();
-			if($checkTransaction > 0) {
+			$penalty = DB::table('borrowers')
+						->Where('id', '=', $borrowerId)
+						->Where('penalty', '>', 0)
+						->count();
+			if($checkTransaction > 0 || $penalty > 0) {
 				return 0;
 			} else {
 				$transaction = new Transaction;
@@ -177,7 +253,8 @@ class UsersController extends \BaseController {
 		}
 	}
 
-	public function userHistory() {
+	public function userHistory() 
+	{
 		$histories = DB::table('transactions')
 	        				->leftJoin('books', 'transactions.book_id', '=', 'books.id')
 	        				->Where('borrower_id', '=', Auth::user()->borrower_id)
@@ -188,7 +265,8 @@ class UsersController extends \BaseController {
 		return View::make('users.history')->with('histories', $histories);
 	}
 
-	public function userRequest() {
+	public function userRequest() 
+	{
 		$requests = DB::table('transactions')
 						->join('books', 'transactions.book_id', '=', 'books.id')
 	        			->select('transactions.id as transaction_id', 
@@ -205,13 +283,15 @@ class UsersController extends \BaseController {
 		return View::make('users.request')->with('requests', $requests);
 	}
 
-	public function deleteRequest() {
+	public function deleteRequest() 
+	{
 		if (Request::ajax()) {
 			Transaction::find(Input::get('transaction_id'))->delete();
 		}
 	}
 
-	public function userUnreturn() {
+	public function userUnreturn() 
+	{
 		$unreturns = DB::table('transactions')
 	        				->leftJoin('books', 'transactions.book_id', '=', 'books.id')
 	        				->Where('borrower_id', '=', Auth::user()->borrower_id)

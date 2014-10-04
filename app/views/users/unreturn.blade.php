@@ -4,7 +4,7 @@
     @include('include.nav')
     
     <div class="container">
-        <div class="panel panel-default"> <!-- TYPE PANEL -->
+        <div class="panel panel-primary"> <!-- TYPE PANEL -->
             <div class="panel-heading"> <!-- HEAD PANEL -->
                 <h4 class="panel-title"><i class="fa fa-book"></i>  My Unreturned Books</h4>
             </div><!-- /HEAD PANEL -->

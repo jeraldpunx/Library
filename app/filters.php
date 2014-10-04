@@ -91,3 +91,18 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+
+Route::filter('adminUser', function()
+{ 
+	if (Auth::user()->previlage != 0) {
+		return Redirect::route('home'); 
+	} 
+});
+
+Route::filter('normalUser', function()
+{
+	if (Auth::user()->previlage != 1) {
+		return Redirect::route('home'); 
+	}
+});

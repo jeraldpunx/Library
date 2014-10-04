@@ -14,7 +14,7 @@
     @include('include.nav')
     
     <div class="container">
-        <div class="panel panel-default"> <!-- TYPE PANEL -->
+        <div class="panel panel-primary"> <!-- TYPE PANEL -->
             <div class="panel-heading"> <!-- HEAD PANEL -->
                 <h4 class="panel-title"><i class="fa fa-bookmark"></i>  My Request</h4>
             </div><!-- /HEAD PANEL -->

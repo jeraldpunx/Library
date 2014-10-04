@@ -39,7 +39,12 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#" style="color: #c0392b;">Penalty: $50</a></li>
+				@if($bookUnreturn > 0)
+				{{ '<li><a href="'.URL::route('userUnreturn').'" style="color: #c0392b;">Unreturn Book: '.$bookUnreturn.'</a></li>'}}
+				@endif
+				@if($borrowers[0]->penalty > 0)
+				{{ '<li><a href="#" style="color: #c0392b;">Penalty: $'.$borrowers[0]->penalty.'</a></li>'}}
+				@endif
 				<li class="dropdown">
 					<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fui-user"></i> {{Auth::user()->username}}<span class="caret"></span></a>
 					<ul role="menu" class="dropdown-menu">
