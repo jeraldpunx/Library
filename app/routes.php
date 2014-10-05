@@ -28,47 +28,6 @@ Route::get('/', ['as'=>'home', function(){
 	} else {
 		return View::make('search');
 	}
-
-	
-	// User::create([
-	// 	'username'=>'admin',
-	// 	'password'=>Hash::make('123'),
-	// 	'previlage'=>0
-	// ]);
-
-	// Book::create([
-	// 	'ISBN'=>'ABC005',
-	// 	'title'=>'Fucktard',
-	// 	'author'=>'JC Mamits',
-	// 	'description'=>'Fuck',
-	// 	'category'=>'Indie',
-	// 	'quantity'=>10
-	// ]);
-	// Book::create([
-	// 	'ISBN'=>'ABC006',
-	// 	'title'=>'What the fuck',
-	// 	'author'=>'Kevin Tabada',
-	// 	'description'=>'Tuara',
-	// 	'category'=>'Action',
-	// 	'quantity'=>10
-	// ]);
-	// Book::create([
-	// 	'ISBN'=>'ABC001',
-	// 	'title'=>'We are electric',
-	// 	'author'=>'Jerald Punx',
-	// 	'description'=>'Fuck',
-	// 	'category'=>'Indie',
-	// 	'quantity'=>10
-	// ]);
-	// Book::create([
-	// 	'ISBN'=>'ABC002',
-	// 	'title'=>'Superman',
-	// 	'author'=>'Jerald Punx',
-	// 	'description'=>'Tuara',
-	// 	'category'=>'Action',
-	// 	'quantity'=>10
-	// ]);
-	// return "Done";
 }]);
 //NORMAL
 Route::get('login', ['as'=>'login', 'uses'=>'UsersController@showLogin'])->before('guest');
@@ -77,18 +36,50 @@ Route::get('logout', ['as'=>'logout', 'uses'=>'UsersController@logout'])->before
 Route::get('register', ['as'=>'register', 'uses'=>'UsersController@create'])->before('guest');
 Route::post('register', 'UsersController@store');
 Route::post('result-search-data', 'UsersController@resultSearchData');
-//ADMIN
 
-//BORROWER
-  //AJAX
+//NORMAL USER
 Route::group(array('before'=>'normalUser'), function(){
+	//AJAX
 	Route::post('request-book-data', 'UsersController@requestBookData');
-	Route::post('delete-request', 'UsersController@deleteRequest');
+	Route::post('delete-request',    'UsersController@deleteRequest');
 
-	Route::get('manageProfile', ['as'=>'manageProfile', 'uses'=>'UsersController@manageProfile']);
-	Route::post('changeProfile', ['as'=>'changeProfile', 'uses'=>'UsersController@changeProfile']);
+	//MANAGE USER
+	Route::get('manageProfile',   ['as'=>'manageProfile',  'uses'=>'UsersController@manageProfile']);
+	Route::post('changeProfile',  ['as'=>'changeProfile',  'uses'=>'UsersController@changeProfile']);
 	Route::post('changePassword', ['as'=>'changePassword', 'uses'=>'UsersController@changePassword']);
-	Route::get('userHistory', ['as'=>'userHistory', 'uses'=>'UsersController@userHistory']);
-	Route::get('userRequest', ['as'=>'userRequest', 'uses'=>'UsersController@userRequest']);
+	
+	//TRANSACTION
+	Route::get('userHistory',  ['as'=>'userHistory',  'uses'=>'UsersController@userHistory']);
+	Route::get('userRequest',  ['as'=>'userRequest',  'uses'=>'UsersController@userRequest']);
 	Route::get('userUnreturn', ['as'=>'userUnreturn', 'uses'=>'UsersController@userUnreturn']);
+});
+
+//ADMIN
+Route::group(array('before'=>'adminUser'), function(){
+	//MANAGE BOOKS
+	Route::get('books',             ['as'=>'books',        'uses'=>'AdminController@books']);
+	Route::get('books/add',         ['as'=>'books/add',    'uses'=>'AdminController@addBooks']);
+	Route::post('books/create',     ['as'=>'books/create', 'uses'=>'AdminController@createBooks']);
+	Route::get('books/{id}/edit',   ['as'=>'books/edit',   'uses'=>'AdminController@editBooks']);
+	Route::put('books/{id}',        ['as'=>'books/update', 'uses'=>'AdminController@updateBooks']);
+	Route::get('books/delete/{id}', ['as'=>'books/delete', 'uses'=>'AdminController@deleteBooks']);
+
+	//MANAGE BORROWERS
+	Route::get('borrowers',             ['as'=>'borrowers',        'uses'=>'AdminController@borrowers']);
+	Route::get('borrowers/add',         ['as'=>'borrowers/add',    'uses'=>'AdminController@addBorrowers']);
+	Route::post('borrowers/create',     ['as'=>'borrowers/create', 'uses'=>'AdminController@createBorrowers']);
+	Route::post('users/create',         ['as'=>'users/create',     'uses'=>'AdminController@createUsers']);
+	Route::get('borrowers/{id}/edit',   ['as'=>'borrowers/edit',   'uses'=>'AdminController@editBorrowers']);
+	Route::put('borrowers/{id}',        ['as'=>'borrowers/update', 'uses'=>'AdminController@updateBorrowers']);
+	Route::put('users/{id}',            ['as'=>'users/update',     'uses'=>'AdminController@updateUsers']);
+	Route::get('borrowers/delete/{id}', ['as'=>'borrowers/delete', 'uses'=>'AdminController@deleteBorrowers']);
+	
+	//TRANSACTION
+	Route::get('adminHistory',  ['as'=>'adminHistory',  'uses'=>'AdminController@adminHistory']);
+	Route::get('adminRequest',  ['as'=>'adminRequest',  'uses'=>'AdminController@adminRequest']);
+	Route::get('adminUnreturn', ['as'=>'adminUnreturn', 'uses'=>'AdminController@adminUnreturn']);
+
+	//AJAX
+	Route::post('approve-request', 'AdminController@approveRequest');
+	Route::post('return-book',     'AdminController@returnBook');
 });

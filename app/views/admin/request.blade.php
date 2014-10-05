@@ -13,6 +13,8 @@
                 <table id="example" class="table table-hover table-striped" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>Borrowers ID</th>
+                            <th>Name</th>
                             <th>ISBN</th>
                             <th>Book Title</th>
                             <th>Book Author</th>
@@ -23,16 +25,20 @@
                     <tbody>
                     @foreach ($requests as $request)
                         <tr>
+                            <td>{{ $request->borrower_code }}</td>
+                            <td>{{ $request->first_name . ' ' . $request->last_name }}</td>
                             <td>{{ $request->ISBN }}</td>
                             <td>{{ $request->title }}</td>
                             <td>{{ $request->author }}</td>
                             <td>{{ $request->reservedDate }}</td>
-                            <td><a class="btn btn-danger delete" data-id="{{ $request->transaction_id }}" href="#"><span class="fa fa-trash"> Cancel</span></a></td>
+                            <td><a class="btn btn-info approve" data-id="{{ $request->transaction_id }}" href="#"><span class="fa fa-thumbs-up"> Approve</span></a></td>
                         </tr>
                     @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th>Borrower Code</th>
+                            <th>Name</th>
                             <th>ISBN</th>
                             <th>Book Title</th>
                             <th>Book Author</th>
@@ -49,28 +55,28 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#example').dataTable({
-                "order": [[ 3, "desc" ]],
+                "order": [[ 5, "asc" ]],
                 "columnDefs": [
-                    { "width": "5%", "targets": 4 }
+                    { "width": "5%", "targets": 6 }
                 ]
             });
 
-            $('.delete').click(function() {
+            $('.approve').click(function() {
                 var transaction_id = $(this).data('id');
                 $(this).parent().parent().remove();
                 $.ajax({
                     method: 'post',
-                    url: 'delete-request',
+                    url: 'approve-request',
                     data: {transaction_id: transaction_id},
                     success: function(e) {
                         notif({
-                            msg: "Successfully canceled!",
+                            msg: "Successfully Approved!",
                             bgcolor: "#27ae60"
                         });
                     },
                     error: function(e) {
                         notif({
-                            msg: "Failed to cancel request.",
+                            msg: "Failed to approve request.",
                             bgcolor: "#c0392b"
                         });
                     }

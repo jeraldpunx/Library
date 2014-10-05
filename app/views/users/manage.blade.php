@@ -1,12 +1,8 @@
 @extends('layout')
 
 @section('content')
-	<style type="text/css">
-        #ui_notifIt {
-            top: 70px;
-        }
-    </style>
     @include('include.nav')
+    
 	<div class="container">
 		<div class="col-md-7">
 			<div class="panel panel-primary">

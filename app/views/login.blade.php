@@ -1,8 +1,12 @@
 @extends('layout')
 
 @section('content')
+	<style type="text/css">
+        #ui_notifIt {
+            top: 10px;
+        }
+    </style>
 	<div class="login-screen">
-
 		{{ Form::open(['action'=>'login', 'method'=>'POST', 'class'=>'login-form']) }}
 			<div class="form-group">
 				{{ Form::text('username', '', ['class'=>'form-control login-field', 'placeholder'=>'Enter your username', 'required'=>'', 'autofocus'=>'']) }}

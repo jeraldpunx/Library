@@ -2,6 +2,7 @@
 
 @section('content')
 	@include('include.nav')
+	
 	<table data-toggle="table" data-url="data1.json" data-cache="false" data-height="299">
 	    <thead>
 	        <tr>

@@ -14,6 +14,25 @@
 	<!-- CHECK IF ADMIN OR NORMAL -->
 	@if(Auth::user()->previlage == 0)
 		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-left">
+				<li class="dropdown">
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-gears"></i> Manage<span class="caret"></span></a>
+					<ul role="menu" class="dropdown-menu">
+						<li><a href="{{ URL::route('books') }}"><i class="fui-book"></i> Books</a></li>
+						<li><a href="{{ URL::route('borrowers') }}"><i class="fui-user"></i> Borrowers</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-info-circle"></i> Transaction <b class="caret"></b></a>
+					<span class="dropdown-arrow"></span>
+					<ul class="dropdown-menu">
+						<li><a href="{{ URL::route('adminHistory') }}"><i class="fa fa-history"></i> History</a></li>
+						<li><a href="{{ URL::route('adminRequest') }}"><i class="fa fa-bookmark"></i> Request</a></li>
+						<li><a href="{{ URL::route('adminUnreturn') }}"><i class="fa fa-book"></i> Unreturned Books</a></li>
+					</ul>
+				</li>
+				<li><a href="#about"><i class="fa fa-book"></i> Request <span class="badge" style="background-color: #1abc9c;">20</span></a></li>
+			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fui-user"></i> {{Auth::user()->username}}<span class="caret"></span></a>
