@@ -11,4 +11,7 @@ class Borrower extends Eloquent implements UserInterface, RemindableInterface {
 
 	protected $table = 'borrowers';
 	protected $fillable = ['borrower_code', 'first_name', 'last_name'];
+
+	public static $daysExpired = 5;
+	public static $perDayPenalty = 1;
 }

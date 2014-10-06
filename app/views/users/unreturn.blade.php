@@ -17,6 +17,7 @@
                             <th>Book Title</th>
                             <th>Book Author</th>
                             <th>Date Requested</th>
+                            <th>Must Return Before</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -26,6 +27,12 @@
                             <td>{{ $unreturn->title }}</td>
                             <td>{{ $unreturn->author }}</td>
                             <td>{{ $unreturn->borrowedDate }}</td>
+                            <td>
+                            <?php
+                                $date = strtotime('+'.Borrower::$daysExpired.' days', strtotime($unreturn->borrowedDate) );
+                                echo date('Y-m-d',$date);
+                            ?>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -35,6 +42,7 @@
                             <th>Book Title</th>
                             <th>Book Author</th>
                             <th>Date Borrowed</th>
+                            <th>Must Return Before</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -46,7 +54,10 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#example').dataTable({
-                "order": [[ 3, "desc" ]]
+                "order": [[ 3, "asc" ]],
+                "columnDefs": [
+                    { "width": "18%", "targets": 4 }
+                ]
             });
         });
     </script>

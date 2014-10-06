@@ -303,6 +303,20 @@ class AdminController extends BaseController {
 	public function returnBook() 
 	{
 		if (Request::ajax()) {
+			$result = DB::table('transactions')
+					->Where('id', '=', Input::get('transaction_id'))
+					->get();
+			$borrowedDate = strtotime($result[0]->borrowedDate);
+			$current_date = strtotime(date("Y-m-d H:i:s", time()));
+			$datediff = floor(($current_date - $borrowedDate)/(60*60*24));
+
+
+			if($datediff >= 2) {
+				$totalPenalty = (floor($datediff / Borrower::$daysExpired)) * Borrower::$perDayPenalty;;
+				DB::table('borrowers')
+						->Where('id', '=', $result[0]->borrower_id)
+						->increment('penalty', $totalPenalty);
+			}
 			$transaction = Transaction::find(Input::get('transaction_id'));
 			$transaction->returnedDate = date("Y-m-d H:i:s", time());
 			$transaction->save();
@@ -375,9 +389,18 @@ class AdminController extends BaseController {
 						->Where('id', '=', Input::get('borrower_id'))
 						->Where('penalty', '>', 0)
 						->count();
+			$borrowedBook = DB::table('transactions')
+						->Where('borrower_id', '=', Input::get('borrower_id'))
+						->Where('book_id', '=', Input::get('book_id'))
+						->whereNotNull('borrowedDate')
+						->whereNull('returnedDate')
+						->count();
 			if($penalty > 0) {
 				return Redirect::back()
 				   	->with('flash_error', "You still have penalty!");
+			} else if($borrowedBook > 0) {
+				return Redirect::back()
+				   	->with('flash_error', "You're still borrowing this Book!");
 			}
 	    	$transaction = new Transaction;
 			$transaction->borrower_id = Input::get('borrower_id');

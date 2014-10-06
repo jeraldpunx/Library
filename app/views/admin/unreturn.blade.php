@@ -69,6 +69,7 @@
                     url: 'return-book',
                     data: {transaction_id: transaction_id},
                     success: function(e) {
+                        console.log(e);
                         notif({
                             msg: "Successfully return!",
                             bgcolor: "#27ae60"
