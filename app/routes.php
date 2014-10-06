@@ -78,8 +78,14 @@ Route::group(array('before'=>'adminUser'), function(){
 	Route::get('adminHistory',  ['as'=>'adminHistory',  'uses'=>'AdminController@adminHistory']);
 	Route::get('adminRequest',  ['as'=>'adminRequest',  'uses'=>'AdminController@adminRequest']);
 	Route::get('adminUnreturn', ['as'=>'adminUnreturn', 'uses'=>'AdminController@adminUnreturn']);
+	Route::get('issueBook',     ['as'=>'issueBook',     'uses'=>'AdminController@issueBook']);
+	Route::post('issueBookPost',['as'=>'issueBookPost', 'uses'=>'AdminController@storeIssueBook']);
 
 	//AJAX
-	Route::post('approve-request', 'AdminController@approveRequest');
-	Route::post('return-book',     'AdminController@returnBook');
+	Route::post('approve-request',      'AdminController@approveRequest');
+	Route::post('return-book',          'AdminController@returnBook');
+	Route::get('searchBorrowersCode',   'AdminController@searchBorrowersCode');
+	Route::post('result-borrower-code', 'AdminController@resultBorrowerCode');
+	Route::get('searchISBN',            'AdminController@searchISBN');
+	Route::post('result-ISBN',          'AdminController@resultISBN');
 });

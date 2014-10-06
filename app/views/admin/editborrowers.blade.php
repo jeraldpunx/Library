@@ -26,6 +26,11 @@
                             <p>Last Name:</p>
                             {{ Form::text('last_name', $borrower[0]->last_name, ['class'=>'form-control', 'placeholder'=>'Lastname', 'required'=>'', 'autofocus'=>'']) }}
                         </div>
+
+                        <div class="form-group">
+                            <p>Penalty:</p>
+                            {{ Form::text('penalty', $borrower[0]->penalty, ['class'=>'form-control', 'placeholder'=>'Penalty', 'required'=>'', 'autofocus'=>'']) }}
+                        </div>
                     
                         {{ Form::submit('Save Changes', ['class'=>'btn btn-primary btn-lg btn-block']) }}
                     {{ Form::close() }}

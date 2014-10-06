@@ -82,6 +82,14 @@
                     }
                 });
             });
+
+            @if(Session::has('flash_error'))
+                notif({
+                  msg: "{{Session::get('flash_error')}}",
+                  type: "success",
+                  bgcolor: "#27ae60"
+                });
+            @endif
         });
     </script>
 @endsection

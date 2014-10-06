@@ -94,7 +94,10 @@ Route::filter('csrf', function()
 
 
 Route::filter('adminUser', function()
-{ 
+{
+	if (!Auth::check()) {
+		return Redirect::route('home'); 
+	}
 	if (Auth::user()->previlage != 0) {
 		return Redirect::route('home'); 
 	} 
@@ -102,6 +105,9 @@ Route::filter('adminUser', function()
 
 Route::filter('normalUser', function()
 {
+	if (!Auth::check()) {
+		return Redirect::route('home'); 
+	}
 	if (Auth::user()->previlage != 1) {
 		return Redirect::route('home'); 
 	}

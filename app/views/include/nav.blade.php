@@ -31,7 +31,7 @@
 						<li><a href="{{ URL::route('adminUnreturn') }}"><i class="fa fa-book"></i> Unreturned Books</a></li>
 					</ul>
 				</li>
-				<li><a href="#about"><i class="fa fa-book"></i> Request <span class="badge" style="background-color: #1abc9c;">20</span></a></li>
+				<li><a href="{{ URL::route('issueBook') }}"><i class="fa fa-book"></i> Issue a Book</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">

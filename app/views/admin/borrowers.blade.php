@@ -119,5 +119,16 @@
         $('#confirm-delete').on('show.bs.modal', function(e) {
             $(this).find('.danger').attr('href', $(e.relatedTarget).data('html'));
         });
+        $(function() {
+            @if(Session::has('flash_error'))
+                notif({
+                  type: "success",
+                  msg: "{{ Session::get('flash_error') }}",
+                  bgcolor: "{{ Session::get('flash_color') }}",
+                  multiline: true
+                });
+            @endif
+        });
     </script>
+
 @endsection

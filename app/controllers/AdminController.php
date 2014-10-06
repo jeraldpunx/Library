@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Manila');
 class AdminController extends BaseController {
 	public function books()
 	{
@@ -55,7 +55,9 @@ class AdminController extends BaseController {
 
 			$books->save();
 
-			return Redirect::to('books');
+			return Redirect::to('books')
+					->with('flash_error', 'Successfully created.')
+        			->with('flash_color', '#27ae60');
 		} else{
 			return Redirect::back()->withInput()->withErrors($validation)->with('flash_error', 'Errors!');
 		}
@@ -85,14 +87,18 @@ class AdminController extends BaseController {
 
 		$books->save();
 
-		return Redirect::to('books');
+		return Redirect::to('books')
+				->with('flash_error', 'Successfully updated.')
+        		->with('flash_color', '#27ae60');
     }
     //delete books
     public function deleteBooks($id)
     {
     	$books = Book::find($id);
     	$books->delete();
-    	return Redirect::to('books');
+    	return Redirect::to('books')
+    			->with('flash_error', 'Successfully deleted.')
+        		->with('flash_color', '#27ae60');
     }
     public function borrowers()
 	{
@@ -134,7 +140,9 @@ class AdminController extends BaseController {
 			$borrower->penalty = 0;
 			$borrower->save();
 
-			return Redirect::to('borrowers');
+			return Redirect::to('borrowers')
+					->with('flash_error', 'Successfully created.')
+        			->with('flash_color', '#27ae60');
 		} else{
 			return Redirect::back()->withInput()->withErrors($validation)->with('flash_error', 'Errors!');
 		}
@@ -160,9 +168,14 @@ class AdminController extends BaseController {
 			$users->borrower_id = Input::get('borrower_id');
 			$users->save();
 
-			return Redirect::to('borrowers');
+			return Redirect::to('borrowers')
+				->with('flash_error', 'Successfully created.')
+        		->with('flash_color', '#27ae60');
 		} else{
-			return Redirect::back()->withInput()->withErrors($validation)->with('flash_error', 'Errors!');
+			return Redirect::back()
+					->with('flash_error', 'Failed to create Account.')
+		        	->with('flash_color', '#c0392b')
+		        	->withInput();
 		}
 	}
 	//edit borrowers
@@ -187,10 +200,13 @@ class AdminController extends BaseController {
 	    $borrowers->borrower_code = Input::get('borrower_code');
 		$borrowers->first_name = Input::get('first_name');
 		$borrowers->last_name = Input::get('last_name');
+		$borrowers->penalty = Input::get('penalty');
 
 		$borrowers->save();
 
-		return Redirect::to('borrowers');
+		return Redirect::to('borrowers')
+				->with('flash_error', 'Successfully updated.')
+        		->with('flash_color', '#27ae60');
     }
     public function updateUsers($id)
     {
@@ -205,7 +221,9 @@ class AdminController extends BaseController {
 
 		$users->save();
 
-		return Redirect::to('borrowers');
+		return Redirect::to('borrowers')
+				->with('flash_error', 'Successfully updated.')
+        		->with('flash_color', '#27ae60');
     }
     //delete borrowers
     public function deleteBorrowers($id)
@@ -223,7 +241,9 @@ class AdminController extends BaseController {
 		}
 		$borrower = Borrower::find($borrower[0]->borrower_id);
     	$borrower->delete();
-    	return Redirect::to('borrowers');
+    	return Redirect::to('borrowers')
+    			->with('flash_error', 'Successfully deleted.')
+        		->with('flash_color', '#27ae60');
     }
 	
 
@@ -287,5 +307,91 @@ class AdminController extends BaseController {
 			$transaction->returnedDate = date("Y-m-d H:i:s", time());
 			$transaction->save();
 		}
-	}  
+	} 
+
+	//ISSUE BOOK
+	public function issueBook()
+	{
+		return View::make('admin.issue');
+	}
+
+	public function searchBorrowersCode()
+	{
+		$search = Input::get('borrower_code');
+		$results = DB::table('borrowers')
+				->Where('borrower_code', 'LIKE','%'.$search.'%')
+				->get();
+		$data = array();
+		foreach($results as $result)
+			array_push($data, $result->borrower_code);
+		
+		return json_encode($data);
+	}
+
+	public function resultBorrowerCode()
+	{
+		$search = Input::get('result_borrower_code');
+		$results = DB::table('borrowers')
+				->Where('borrower_code', '=', $search)
+				->get();
+		return $results;
+	}
+
+	public function searchISBN()
+	{
+		$search = Input::get('ISBN');
+		$results = DB::table('books')
+				->Where('ISBN', 'LIKE','%'.$search.'%')
+				->get();
+		$data = array();
+		foreach($results as $result)
+			array_push($data, $result->ISBN);
+		
+		return json_encode($data);
+	}
+
+	public function resultISBN()
+	{
+		$search = Input::get('result_ISBN');
+		$results = DB::table('books')
+				->Where('ISBN', '=', $search)
+				->get();
+		return $results;
+	}
+
+	public function storeIssueBook()
+	{
+		$input = Input::all();
+
+	    $rules = array(
+			'book_id' => 'required',
+			'borrower_id' => 'required'
+	    );
+
+	    $validation = Validator::make($input, $rules);
+
+	    if($validation->passes()) {
+	    	$penalty = DB::table('borrowers')
+						->Where('id', '=', Input::get('borrower_id'))
+						->Where('penalty', '>', 0)
+						->count();
+			if($penalty > 0) {
+				return Redirect::back()
+				   	->with('flash_error', "You still have penalty!");
+			}
+	    	$transaction = new Transaction;
+			$transaction->borrower_id = Input::get('borrower_id');
+			$transaction->book_id = Input::get('book_id');
+			$transaction->borrowedDate = date("Y-m-d H:i:s", time());
+			$transaction->save();
+
+			return Redirect::route('adminUnreturn')
+						->with('flash_error', 'Successfully Book Issued.');
+	    } else {
+	    	return Redirect::back()
+		    	->withInput()
+		    	->withErrors($validation)
+		    	->with('flash_error', 'Validation Errors!');
+	    }
+	}
 }

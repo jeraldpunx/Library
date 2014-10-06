@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Manila');
 class UsersController extends \BaseController {
 
 	public function showLogin()
@@ -143,9 +143,9 @@ class UsersController extends \BaseController {
 						->with('flash_color', '#27ae60');
 	    } else {
 	    	return Redirect::back()
-	    	->withInput()
-	    	->withErrors($validation)
-	    	->with('flash_error', 'Validation Errors!');
+		    	->withInput()
+		    	->withErrors($validation)
+		    	->with('flash_error', 'Validation Errors!');
 	    }
 	}
 
