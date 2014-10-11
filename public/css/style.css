@@ -126,3 +126,23 @@ body {
 th, td {
   text-align: center;
 }
+
+.footer-margin-top {
+  margin-top: 12px;
+}
+
+.navbar-inner {
+  background-color: #ecf0f1;
+  border-bottom: 4px solid #1abc9c;
+}
+
+div.hr {
+  background: #1abc9c  no-repeat scroll center;
+  margin-right: 15px;
+  width:1136px;
+  height:2px;
+}
+
+div.hr hr {
+  display: none;
+}

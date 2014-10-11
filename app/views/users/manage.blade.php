@@ -1,5 +1,9 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | Manage Profile
+@endsection
+
 @section('content')
     @include('include.nav')
     

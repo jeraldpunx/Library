@@ -1,5 +1,9 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | Login
+@endsection
+
 @section('content')
 	<style type="text/css">
         #ui_notifIt {

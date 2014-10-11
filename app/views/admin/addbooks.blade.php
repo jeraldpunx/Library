@@ -1,16 +1,20 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | Add Books
+@endsection
+
 @section('content')
     @include('include.nav')
 
     {{ Form::open(array('url'=>'books/create','files'=>true)) }}
-        <div class="container">
-            <h4 style="margin-left: 14px;">Add Book</h4>
-            <div class="hr"><hr /></div><br><br>
-            <div class="col-md-12">
+    <div class="container">
+        <h4><i class="fa fa-book"></i> Add Books</h4>
+        <div class="hr"><hr /></div><br><br>
+            <div class="col-md-13">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><strong>+ Add Books </strong></h3>
+                        <h3 class="panel-title"><strong><i class="fa fa-book"></i> Add Books </strong></h3>
                     </div>
                     <div class="panel-body">
                         <div class="form-horizontal">

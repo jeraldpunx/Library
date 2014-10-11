@@ -1,12 +1,18 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | History
+@endsection
+
 @section('content')
     @include('include.nav')
     
-    <div class="container">
+     <div class="container">
+            <h5><i class="fa fa-history"></i> History</h5>
+            <div class="hr"><hr /></div><br><br>
         <div class="panel panel-primary"> <!-- TYPE PANEL -->
             <div class="panel-heading"> <!-- HEAD PANEL -->
-                <h4 class="panel-title"><i class="fa fa-history"></i>  Transaction History</h4>
+                <h4 class="panel-title"><i class="fa fa-history"></i> History</h4>
             </div><!-- /HEAD PANEL -->
                     
             <div class="panel-body"> <!-- CONTENT PANEL -->

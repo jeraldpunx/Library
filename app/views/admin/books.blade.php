@@ -1,15 +1,18 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | Books
+@endsection
+
 @section('content')
     @include('include.nav')
-
-    <div class="container">
-        <h4 style="margin-left: 14px;">All Books</h4>
-        <div class="hr"><hr /></div><br><br>
-        <div class="col-md-12">
+      <div class="container">
+            <h5><i class="fa fa-book"></i> Books</h5>
+            <div class="hr"><hr /></div><br><br>
+        <div class="col-md-13">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Books </strong></h3>
+                    <h3 class="panel-title"><strong><i class="fa fa-book"></i> Books </strong></h3>
                 </div>
                 <div class="panel-body">
                     {{ link_to('books/add', '+ Add Books',['class="btn btn-primary"']) }}
@@ -45,7 +48,6 @@
                 </div>
             </div>
         </div>
-        @if($books)
         <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -54,7 +56,7 @@
                     </div>
                     <div class="modal-body">
                         <dl class="dl-horizontal">
-                          <dt>ISBN Code:</dt>
+                          <dt>ISBN:</dt>
                           <dd>{{ $book['ISBN'] }}</dd>
                           <dt>Title:</dt>
                           <dd>{{ $book['title'] }}</dd>
@@ -65,14 +67,15 @@
                         </dl>
                     </div>
                     <div class="modal-footer">
-                            <?php $id = $book['id']; ?>
+                            <?php $id = $book->id; ?>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <a href="{{ URL::route('books/delete', $id) }}" class="btn btn-danger danger">Delete</a>
+                            <a href="{{ URL::route('borrowers/delete', $id) }}" class="btn btn-danger danger">Delete</a>
                     </div>
                 </div>
             </div>
         </div>
-        @endif
+       
+     
     </div>
 @endsection
 

@@ -35,8 +35,13 @@ class AdminController extends BaseController {
 	    $validation = Validator::make($input, $rules, $custom_error);
 
 		$image = Input::file('image');
+		return var_dump($image);
 		if($image) {
-			$filename = $image->getClientOriginalName();        
+			$destination = 'public/img/upload';      
+			$image->move($destination, $filename);
+			$file = strtolower($filename);
+
+			$filename = $image->getClientOriginalName();
 			$destination = 'public/img/upload';      
 			$image->move($destination, $filename);
 			$file = strtolower($filename);
@@ -261,6 +266,7 @@ class AdminController extends BaseController {
 
 	public function adminRequest() 
 	{
+		DB::table('notifications')->delete();
 		$requests = DB::table('transactions')
 						->join('books', 'transactions.book_id', '=', 'books.id')
 	        			->join('borrowers', 'transactions.borrower_id', '=', 'borrowers.id')
@@ -416,5 +422,73 @@ class AdminController extends BaseController {
 		    	->withErrors($validation)
 		    	->with('flash_error', 'Validation Errors!');
 	    }
+	}
+
+
+
+	public function requestNotifications(){
+
+		DB::table('notifications')->delete();
+
+		return  Redirect::to('adminRequest');
+
+	}
+
+	public function viewBorrowerHistory($id)
+	{
+		$borrowerHistory = DB::table('transactions')
+	        				->leftJoin('books', 'transactions.book_id', '=', 'books.id')
+	        				->leftJoin('borrowers', 'transactions.borrower_id', '=', 'borrowers.id')
+	        				->where('borrower_id', '=',  $id)
+	        				->whereNotNull('borrowedDate')
+	        				->whereNotNull('returnedDate')
+				            ->get();
+		$borrowers = DB::table('borrowers')
+					->Where('id', '=', $id)
+					->get();
+
+
+		return View::make('admin.viewborrowerhistory')
+				->with('borrowerHistory', $borrowerHistory)
+				->with('borrowers', $borrowers);
+	}
+
+	public function viewBorrowerRequest($id)
+	{
+		$borrowerRequest = DB::table('transactions')
+						->join('books', 'transactions.book_id', '=', 'books.id')
+	        			->join('borrowers', 'transactions.borrower_id', '=', 'borrowers.id')
+	        			->where('borrower_id',$id)
+	        			->whereNotNull('reservedDate')
+						->whereNull('borrowedDate')
+	        			->whereNull('returnedDate')
+	        			->orderBy('reservedDate', 'desc')
+						->get();
+
+		$borrowers = DB::table('borrowers')
+					->Where('id', '=', $id)
+					->get();
+					
+		return View::make('admin.viewborrowerrequest')
+				->with('borrowerRequest', $borrowerRequest)
+				->with('borrowers', $borrowers);
+	}
+	public function viewBorrowerUnreturn($id)
+	{
+		$borrowerUnreturn = DB::table('transactions')
+						->join('books', 'transactions.book_id', '=', 'books.id')
+	        			->join('borrowers', 'transactions.borrower_id', '=', 'borrowers.id')
+	      				->where('borrower_id',$id)
+	        			->whereNotNull('borrowedDate')
+	        			->whereNull('returnedDate')
+				        ->get();
+
+		$borrowers = DB::table('borrowers')
+					->Where('id', '=', $id)
+					->get();
+
+		return View::make('admin.viewborrowerunreturn')
+					->with('borrowerUnreturn', $borrowerUnreturn)
+					->with('borrowers', $borrowers);
 	}
 }

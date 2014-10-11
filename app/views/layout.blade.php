@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>@yield('title')</title>
+        <link rel="shortcut icon" type="image/png" href="../img/favicon.png"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -19,7 +20,12 @@
     <body>
         <div class="page-wrapper">
             @yield('content')
-            @yield('footer')
+            <footer style="padding-top: 90px; background-color: transparent ;">
+                <div class="container" style="background-color: #fff; color: #1abc9c; border-bottom: 3px solid #1abc9c;">
+                    <p class="pull-left text-left"><span class="fa fa-copyright"></span> 2014-2015 {{ $companyName }}, All rights reserved.</p>
+                    <p class="pull-right text-right">Developed by: JC Mamitz - JeraldPunx - Kevz Tabadz</p>
+                </div>
+            </footer>
         </div>
 
         <!-- Placed at the end of the document so the pages load faster -->

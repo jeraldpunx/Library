@@ -1,12 +1,18 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | Request
+@endsection
+
 @section('content')
     @include('include.nav')
     
-    <div class="container">
+     <div class="container">
+            <h5><i class="fa fa-bookmark"></i> Request</h5>
+            <div class="hr"><hr /></div><br><br>
         <div class="panel panel-primary"> <!-- TYPE PANEL -->
             <div class="panel-heading"> <!-- HEAD PANEL -->
-                <h4 class="panel-title"><i class="fa fa-bookmark"></i>  My Request</h4>
+                <h4 class="panel-title"><i class="fa fa-bookmark"></i> Request</h4>
             </div><!-- /HEAD PANEL -->
                     
             <div class="panel-body"> <!-- CONTENT PANEL -->

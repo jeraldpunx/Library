@@ -1,5 +1,9 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | Unreturn
+@endsection
+
 @section('content')
     @include('include.nav')
     

@@ -1,12 +1,16 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | Borrowers
+@endsection
+
 @section('content')
     @include('include.nav')
 
     <div class="container">
-        <h4 style="margin-left: 14px;">All Borrowers</h4>
+        <h4><i class="fa fa-user"></i> Borrowers</h4>
         <div class="hr"><hr /></div><br><br>
-        <div class="col-md-12">
+        <div class="col-md-13">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title"><strong>Borrowers </strong></h3>
@@ -41,8 +45,11 @@
                                     @endif
                                     </center>
                                 </td>
-                                <td class="text-center">{{ link_to('borrowers/'.$borrower->borrower_id.'/edit','Edit',array('class'=>'btn btn-primary btn-xs')) }}
-                                {{ link_to(''.$borrower->borrower_id,'Del',array('class'=>'btn btn-danger btn-xs','data-toggle'=>'modal','data-target'=>'#confirm-delete')) }}</td>
+                                <td class="text-center">
+                                    {{ link_to('borrowers/view/'.$borrower->borrower_id.'/history/', 'View',array('class'=>'btn btn-info btn-xs')) }}
+                                    {{ link_to('borrowers/'.$borrower->borrower_id.'/edit','Edit',array('class'=>'btn btn-primary btn-xs')) }}
+                                    {{ link_to(''.$borrower->borrower_id,'Del',array('class'=>'btn btn-danger btn-xs','data-toggle'=>'modal','data-target'=>'#confirm-delete')) }}
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -53,7 +60,7 @@
                 </div>
             </div>
         </div>
-        @if($borrowers)
+       
         <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -110,7 +117,7 @@
             </div>
         </div>
         {{ Form::close() }}
-        @endif
+       
     </div>
 @endsection
 

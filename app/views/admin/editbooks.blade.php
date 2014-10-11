@@ -1,14 +1,19 @@
 @extends('layout')
+
+@section('title')
+    {{$companyName}} | Edit Book
+@endsection
+
 @section('content')
     @include('include.nav')
     {{ Form::model($books, ['route' => ['books/update', $books['id']],'method' => 'put']) }}
-        <div class="container" style="margin-top:30px">
-            <h4 style="margin-left: 14px;">Edit Book</h4>
-            <div class="hr"><hr /></div><br><br>
-            <div class="col-md-12">
-                <div class="panel panel-default">
+    <div class="container">
+        <h4><i class="fa fa-edit"></i> Edit Books</h4>
+        <div class="hr"><hr /></div><br><br>
+            <div class="col-md-13">
+                <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><strong>Edit Books </strong></h3>
+                        <h3 class="panel-title"><strong><i class="fa fa-edit"></i> Edit Books </strong></h3>
                     </div>
                     <div class="panel-body">
                         <div class="form-horizontal">
@@ -50,7 +55,7 @@
                             </div>
                         </div>  
                         <div style="margin-left: 820px;">
-                            {{ Form::submit('Update',['class="btn btn-success"']) }}
+                            {{ Form::submit('Update',['class="btn btn-primary"']) }}
                         </div>
                     </div>
                 </div>

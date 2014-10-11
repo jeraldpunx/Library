@@ -14,7 +14,7 @@ if(Auth::check()) {
 				    ->count();
 	View::share('bookUnreturn', $bookUnreturn);
 }
-View::share('companyName', 'Punx');
+View::share('companyName', 'USJR Library');
 
 
 
@@ -30,12 +30,13 @@ Route::get('/', ['as'=>'home', function(){
 	}
 }]);
 //NORMAL
-Route::get('login', ['as'=>'login', 'uses'=>'UsersController@showLogin'])->before('guest');
-Route::post('login', 'UsersController@doLogin');
-Route::get('logout', ['as'=>'logout', 'uses'=>'UsersController@logout'])->before('auth');
-Route::get('register', ['as'=>'register', 'uses'=>'UsersController@create'])->before('guest');
-Route::post('register', 'UsersController@store');
-Route::post('result-search-data', 'UsersController@resultSearchData');
+Route::get('login',                ['as'=>'login',    'uses'=>'UsersController@showLogin'])->before('guest');
+Route::post('login',               'UsersController@doLogin');
+Route::get('logout',               ['as'=>'logout',   'uses'=>'UsersController@logout'])->before('auth');
+Route::get('register',             ['as'=>'register', 'uses'=>'UsersController@create'])->before('guest');
+Route::post('register',            'UsersController@store');
+Route::post('result-search-data',  'UsersController@resultSearchData');
+Route::get('userBooks',            ['as'=>'userBooks',    'uses'=>'UsersController@userBooks']);
 
 //NORMAL USER
 Route::group(array('before'=>'normalUser'), function(){
@@ -73,6 +74,9 @@ Route::group(array('before'=>'adminUser'), function(){
 	Route::put('borrowers/{id}',        ['as'=>'borrowers/update', 'uses'=>'AdminController@updateBorrowers']);
 	Route::put('users/{id}',            ['as'=>'users/update',     'uses'=>'AdminController@updateUsers']);
 	Route::get('borrowers/delete/{id}', ['as'=>'borrowers/delete', 'uses'=>'AdminController@deleteBorrowers']);
+	Route::get('borrowers/view/{id}/history',  ['as'=>'borrowers/view/history', 'uses'=>'AdminController@viewBorrowerHistory']);
+	Route::get('borrowers/view/{id}/request',  ['as'=>'borrowers/view/request', 'uses'=>'AdminController@viewBorrowerRequest']);
+	Route::get('borrowers/view/{id}/unreturn',  ['as'=>'borrowers/view/unreturn', 'uses'=>'AdminController@viewBorrowerUnreturn']);
 	
 	//TRANSACTION
 	Route::get('adminHistory',  ['as'=>'adminHistory',  'uses'=>'AdminController@adminHistory']);
@@ -80,6 +84,7 @@ Route::group(array('before'=>'adminUser'), function(){
 	Route::get('adminUnreturn', ['as'=>'adminUnreturn', 'uses'=>'AdminController@adminUnreturn']);
 	Route::get('issueBook',     ['as'=>'issueBook',     'uses'=>'AdminController@issueBook']);
 	Route::post('issueBookPost',['as'=>'issueBookPost', 'uses'=>'AdminController@storeIssueBook']);
+	Route::get('requestNotifications', 	['as'=>'requestNotifications', 'uses'=>'AdminController@requestNotifications']);
 
 	//AJAX
 	Route::post('approve-request',      'AdminController@approveRequest');
@@ -88,4 +93,10 @@ Route::group(array('before'=>'adminUser'), function(){
 	Route::post('result-borrower-code', 'AdminController@resultBorrowerCode');
 	Route::get('searchISBN',            'AdminController@searchISBN');
 	Route::post('result-ISBN',          'AdminController@resultISBN');
+});
+
+
+
+Route::get('test', function() {
+	return View::make('include.footer');
 });

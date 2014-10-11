@@ -27,7 +27,7 @@
 					<span class="dropdown-arrow"></span>
 					<ul class="dropdown-menu">
 						<li><a href="{{ URL::route('adminHistory') }}"><i class="fa fa-history"></i> History</a></li>
-						<li><a href="{{ URL::route('adminRequest') }}"><i class="fa fa-bookmark"></i> Request</a></li>
+						<li><a href="{{ URL::route('adminRequest') }}"><i class="fa fa-bookmark"></i> Request @if(Notification::count() > 0)<span class="badge" style="background-color: #1abc9c;">{{ Notification::count(); }}</span>@endif</a></li>
 						<li><a href="{{ URL::route('adminUnreturn') }}"><i class="fa fa-book"></i> Unreturned Books</a></li>
 					</ul>
 				</li>
@@ -47,6 +47,7 @@
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="{{ URL::route('home') }}"><i class="fa fa-search"></i> Search</a></li>
+				<li><a href="{{ URL::route('userBooks') }}"><i class="fa fa-book"></i> Books</a></li>
 				<li class="dropdown">
 					<a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-info-circle"></i> Transaction <b class="caret"></b></a>
 					<span class="dropdown-arrow"></span>
@@ -79,6 +80,7 @@
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="{{ URL::route('home') }}"><i class="fa fa-search"></i> Search</a></li>
+				<li><a href="{{ URL::route('userBooks') }}"><i class="fa fa-book"></i> Books</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="{{ URL::route('register') }}"><i class="fa fa-angle-double-right"></i> Register</a></li>

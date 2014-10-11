@@ -1,5 +1,9 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | Register
+@endsection
+
 @section('content')
 	<style type="text/css">
         #ui_notifIt {

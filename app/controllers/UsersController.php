@@ -248,6 +248,12 @@ class UsersController extends \BaseController {
 				$transaction->book_id = $bookId;
 				$transaction->reservedDate = date("Y-m-d H:i:s", time());
 				$transaction->save();
+
+				$notification = new Notification;
+
+				$notification->reservedDate  = date("Y-m-d H:i:s", time());
+				$notification->save();
+				
 				return 1;
 			}
 		}
@@ -299,5 +305,12 @@ class UsersController extends \BaseController {
 	        				->whereNull('returnedDate')
 				            ->get();
 		return View::make('users.unreturn')->with('unreturns', $unreturns);
+	}
+
+	public function userBooks()
+	{
+		$books =  Book::all();
+
+		return View::make('users.books')->with('books',$books);
 	}
 }

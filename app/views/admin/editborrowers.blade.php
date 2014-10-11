@@ -1,13 +1,19 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | Edit Borrower
+@endsection
+
 @section('content')
     @include('include.nav')
     
     <div class="container">
+        <h4><i class="fa fa-user"></i>Manage Borrowers</h4>
+        <div class="hr"><hr /></div><br><br>
         <div class="col-md-7">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Manage Profile</h3>
+                    <h3 class="panel-title"<i class="fa fa-user"></i> Manage Borrowers</h3>
                 </div>
                 <div class="panel-body">
                     {{ Form::model($borrower, ['route' => ['borrowers/update', $borrower[0]->borrower_id ],'method' => 'put']) }}

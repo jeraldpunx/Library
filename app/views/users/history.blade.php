@@ -1,5 +1,9 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | History
+@endsection
+
 @section('content')
     @include('include.nav')
     

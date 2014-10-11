@@ -1,13 +1,19 @@
 @extends('layout')
 
+@section('title')
+    {{$companyName}} | Issue
+@endsection
+
 @section('content')
 	<link rel="stylesheet" href="https://code.jquery.com/ui/jquery-ui-git.css" />
     @include('include.nav')
     
     <div class="container">
+            <h5><i class="fa fa-book"></i> Issue Books</h5>
+            <div class="hr"><hr /></div><br><br>
         <div class="panel panel-primary"> <!-- TYPE PANEL -->
             <div class="panel-heading"> <!-- HEAD PANEL -->
-                <h4 class="panel-title"><i class="fa fa-bookmark"></i>  ISSUE A BOOK</h4>
+                <h4 class="panel-title"><i class="fa fa-book"></i>  Issue Books</h4>
             </div><!-- /HEAD PANEL -->
             <div class="panel-body"> <!-- CONTENT PANEL -->
             	<div class="col-md-6">
