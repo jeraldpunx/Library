@@ -26,7 +26,7 @@
                     <p class="pull-right text-right">Developed by: JC Mamitz - JeraldPunx - Kevz Tabadz</p>
                 </div>
                 <div class="container">
-                    <p class="text-right" style="color: #e74c3c;"><i>Penalty rate: ${{ Borrower::$perDayPenalty }}.00 / {{ Borrower::$daysExpired }} days.</i></p>
+                    <p class="text-right" style="padding-top: 5px; color: #e74c3c;"><i>Penalty rate: ${{ Borrower::$perDayPenalty }}.00 / {{ Borrower::$daysExpired }} days.</i></p>
                 </div>
             </footer>
         </div>

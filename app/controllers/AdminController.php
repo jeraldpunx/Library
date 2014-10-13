@@ -77,10 +77,18 @@ class AdminController extends BaseController {
 
 	    $books = Book::find($id);
 
+	    $image = Input::file('image');
+	    if($image) {
+	    	$upload_folder = '/img/upload/';
+	    	$file_name = str_random(30). '.' . $image->getClientOriginalExtension();
+	    	$image->move(public_path() . $upload_folder, $file_name);
+	    }
+
 	    $books->ISBN = Input::get('ISBN');
 		$books->title = Input::get('title');
 		$books->author = Input::get('author');
 		$books->description = Input::get('description');
+		if($image) $books->image = $file_name;
 		$books->category = Input::get('category');
 		$books->quantity = Input::get('quantity');
 

@@ -6,7 +6,7 @@
 
 @section('content')
     @include('include.nav')
-    {{ Form::model($books, ['route' => ['books/update', $books['id']],'method' => 'put']) }}
+    {{ Form::model($books, ['route' => ['books/update', $books['id']],'method' => 'put', 'files'=>true]) }}
     <div class="container">
         <h4><i class="fa fa-edit"></i> Edit Books</h4>
         <div class="hr"><hr /></div><br><br>
@@ -17,6 +17,12 @@
                     </div>
                     <div class="panel-body">
                         <div class="form-horizontal">
+                            <div class="form-group">
+                                {{ Form::label('image', 'IMAGE', array('class' => 'col-sm-2 control-label')) }}
+                                <div class="col-sm-8">
+                                    {{ Form::file('image') }}
+                                </div>
+                            </div>
                             <div class="form-group">
                                 {{ Form::label('ISBN', 'ISBN', array('class' => 'col-sm-2 control-label')) }}
                                 <div class="col-sm-8">
