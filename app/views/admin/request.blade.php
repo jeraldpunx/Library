@@ -82,7 +82,7 @@
                     },
                     error: function(e) {
                         notif({
-                            msg: "Failed to approve request.",
+                            msg: "Failed to approve request. No more available books.",
                             bgcolor: "#c0392b"
                         });
                     }

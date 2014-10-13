@@ -7,7 +7,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a href="{{ URL::route('home') }}" class="navbar-brand">{{$companyName}}</a>
+			<a href="{{ URL::route('home') }}" class="navbar-brand">{{$companyName}} </a>
 		</div>
 <!-- CHECK IF LOGIN -->
 @if(Auth::check())

@@ -20,10 +20,13 @@
     <body>
         <div class="page-wrapper">
             @yield('content')
-            <footer style="padding-top: 90px; background-color: transparent ;">
-                <div class="container" style="background-color: #fff; color: #1abc9c; border-bottom: 3px solid #1abc9c;">
+            <footer style="padding-top: 90px; background-color: transparent;">
+                <div class="container" style="color: #1abc9c; border-bottom: 3px solid #1abc9c;">
                     <p class="pull-left text-left"><span class="fa fa-copyright"></span> 2014-2015 {{ $companyName }}, All rights reserved.</p>
                     <p class="pull-right text-right">Developed by: JC Mamitz - JeraldPunx - Kevz Tabadz</p>
+                </div>
+                <div class="container">
+                    <p class="text-right" style="color: #e74c3c;"><i>Penalty rate: ${{ Borrower::$perDayPenalty }}.00 / {{ Borrower::$daysExpired }} days.</i></p>
                 </div>
             </footer>
         </div>

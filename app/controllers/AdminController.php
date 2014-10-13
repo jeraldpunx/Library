@@ -33,28 +33,22 @@ class AdminController extends BaseController {
 	    );
 
 	    $validation = Validator::make($input, $rules, $custom_error);
-
-		$image = Input::file('image');
-		return var_dump($image);
-		if($image) {
-			$destination = 'public/img/upload';      
-			$image->move($destination, $filename);
-			$file = strtolower($filename);
-
-			$filename = $image->getClientOriginalName();
-			$destination = 'public/img/upload';      
-			$image->move($destination, $filename);
-			$file = strtolower($filename);
-		}       
 		
 		if($validation->passes()) {
+			$image = Input::file('image');
+			if($image) {
+				$upload_folder = '/img/upload/';
+				$file_name = str_random(30). '.' . $image->getClientOriginalExtension();
+				$image->move(public_path() . $upload_folder, $file_name);
+			}
+
 			$books = new Book;
 
 			$books->ISBN = Input::get('ISBN');
 			$books->title = Input::get('title');
 			$books->author = Input::get('author');
 			$books->description = Input::get('description');
-			if($image) $books->image = $file;
+			if($image) $books->image = $file_name;
 			$books->category = Input::get('category');
 			$books->quantity = Input::get('quantity');
 
@@ -286,8 +280,19 @@ class AdminController extends BaseController {
 	{
 		if (Request::ajax()) {
 			$transaction = Transaction::find(Input::get('transaction_id'));
-			$transaction->borrowedDate = date("Y-m-d H:i:s", time());
-			$transaction->save();
+			$book = DB::table('books')
+					->Where('id', '=', $transaction['book_id'])
+					->get();
+			$bookQuantity = $book[0]->quantity;
+			if($bookQuantity > 0) {
+				$transaction->borrowedDate = date("Y-m-d H:i:s", time());
+				$transaction->save();
+				DB::table('books')
+						->Where('id', '=', $transaction['book_id'])
+						->decrement('quantity');
+			} else {
+				return false;
+			}
 		}
 	}
 
@@ -316,13 +321,15 @@ class AdminController extends BaseController {
 			$current_date = strtotime(date("Y-m-d H:i:s", time()));
 			$datediff = floor(($current_date - $borrowedDate)/(60*60*24));
 
-
-			if($datediff >= 2) {
-				$totalPenalty = (floor($datediff / Borrower::$daysExpired)) * Borrower::$perDayPenalty;;
+			if($datediff >= Borrower::$daysExpired) {
+				$totalPenalty = (($datediff + 1) - Borrower::$daysExpired) * Borrower::$perDayPenalty;
 				DB::table('borrowers')
 						->Where('id', '=', $result[0]->borrower_id)
 						->increment('penalty', $totalPenalty);
 			}
+			DB::table('books')
+					->Where('id', '=', $result[0]->book_id)
+					->increment('quantity');
 			$transaction = Transaction::find(Input::get('transaction_id'));
 			$transaction->returnedDate = date("Y-m-d H:i:s", time());
 			$transaction->save();
@@ -401,18 +408,29 @@ class AdminController extends BaseController {
 						->whereNotNull('borrowedDate')
 						->whereNull('returnedDate')
 						->count();
+			$book = DB::table('books')
+					->Where('id', '=', Input::get('book_id'))
+					->get();
+			$bookQuantity = $book[0]->quantity;
+			if($bookQuantity <= 0) {
+				return Redirect::back()
+				   	->with('flash_error', "No more available books.");
+			}
 			if($penalty > 0) {
 				return Redirect::back()
-				   	->with('flash_error', "You still have penalty!");
+				   	->with('flash_error', "He/She still have penalty!");
 			} else if($borrowedBook > 0) {
 				return Redirect::back()
-				   	->with('flash_error', "You're still borrowing this Book!");
+				   	->with('flash_error', "He/She still borrowing this Book!");
 			}
 	    	$transaction = new Transaction;
 			$transaction->borrower_id = Input::get('borrower_id');
 			$transaction->book_id = Input::get('book_id');
 			$transaction->borrowedDate = date("Y-m-d H:i:s", time());
 			$transaction->save();
+			DB::table('books')
+					->Where('id', '=', Input::get('book_id'))
+					->decrement('quantity');
 
 			return Redirect::route('adminUnreturn')
 						->with('flash_error', 'Successfully Book Issued.');
